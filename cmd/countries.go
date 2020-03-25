@@ -15,6 +15,21 @@ var countriesCmd = &cobra.Command{
 	Short: "show data by countries",
 	Long:  `Show cases by countries`,
 	Run: func(cmd *cobra.Command, args []string) {
+
+		showList, err := cmd.Flags().GetBool("list")
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		if showList == true {
+			fmt.Println("Country Codes")
+			fmt.Println("==============")
+			for name, code := range countries {
+				fmt.Println(name, "  - ", code)
+			}
+			return
+		}
+
 		if len(args) == 0 {
 			fmt.Println("enter country code")
 			return
@@ -62,5 +77,6 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// countriesCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	list := countriesCmd.Flags().BoolP("list", "l", false, "list country codes")
+	fmt.Println("list is", list)
 }
